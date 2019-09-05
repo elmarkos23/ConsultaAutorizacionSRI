@@ -1,0 +1,9 @@
+D:\GitHub\ConsultaAutorizacionSRI\ConsultaAutorizacionSRI\bin\Debug\ConsultaAutorizacionSRI.exe.config
+D:\GitHub\ConsultaAutorizacionSRI\ConsultaAutorizacionSRI\bin\Debug\ConsultaAutorizacionSRI.exe
+D:\GitHub\ConsultaAutorizacionSRI\ConsultaAutorizacionSRI\bin\Debug\ConsultaAutorizacionSRI.pdb
+D:\GitHub\ConsultaAutorizacionSRI\ConsultaAutorizacionSRI\obj\Debug\ConsultaAutorizacionSRI.Form1.resources
+D:\GitHub\ConsultaAutorizacionSRI\ConsultaAutorizacionSRI\obj\Debug\ConsultaAutorizacionSRI.Properties.Resources.resources
+D:\GitHub\ConsultaAutorizacionSRI\ConsultaAutorizacionSRI\obj\Debug\ConsultaAutorizacionSRI.csproj.GenerateResource.cache
+D:\GitHub\ConsultaAutorizacionSRI\ConsultaAutorizacionSRI\obj\Debug\ConsultaAutorizacionSRI.csproj.CoreCompileInputs.cache
+D:\GitHub\ConsultaAutorizacionSRI\ConsultaAutorizacionSRI\obj\Debug\ConsultaAutorizacionSRI.exe
+D:\GitHub\ConsultaAutorizacionSRI\ConsultaAutorizacionSRI\obj\Debug\ConsultaAutorizacionSRI.pdb
