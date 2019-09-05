@@ -33,6 +33,9 @@
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.dgvOut = new System.Windows.Forms.DataGridView();
 			this.btnPegar = new System.Windows.Forms.Button();
+			this.lblOut = new System.Windows.Forms.Label();
+			this.lblIn = new System.Windows.Forms.Label();
+			this.barra = new System.Windows.Forms.ProgressBar();
 			((System.ComponentModel.ISupportInitialize)(this.dgvIn)).BeginInit();
 			this.tableLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvOut)).BeginInit();
@@ -47,7 +50,7 @@
 			this.dgvIn.Location = new System.Drawing.Point(3, 33);
 			this.dgvIn.Name = "dgvIn";
 			this.dgvIn.ReadOnly = true;
-			this.dgvIn.Size = new System.Drawing.Size(386, 242);
+			this.dgvIn.Size = new System.Drawing.Size(386, 212);
 			this.dgvIn.TabIndex = 0;
 			// 
 			// btnConsultar
@@ -71,12 +74,17 @@
 			this.tableLayoutPanel1.Controls.Add(this.dgvIn, 0, 1);
 			this.tableLayoutPanel1.Controls.Add(this.btnPegar, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.btnConsultar, 1, 0);
+			this.tableLayoutPanel1.Controls.Add(this.lblOut, 1, 2);
+			this.tableLayoutPanel1.Controls.Add(this.lblIn, 0, 2);
+			this.tableLayoutPanel1.Controls.Add(this.barra, 1, 3);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 2;
+			this.tableLayoutPanel1.RowCount = 4;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(895, 278);
 			this.tableLayoutPanel1.TabIndex = 2;
 			// 
@@ -84,12 +92,13 @@
 			// 
 			this.dgvOut.AllowUserToAddRows = false;
 			this.dgvOut.AllowUserToDeleteRows = false;
+			this.dgvOut.AllowUserToOrderColumns = true;
 			this.dgvOut.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgvOut.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dgvOut.Location = new System.Drawing.Point(395, 33);
 			this.dgvOut.Name = "dgvOut";
 			this.dgvOut.ReadOnly = true;
-			this.dgvOut.Size = new System.Drawing.Size(497, 242);
+			this.dgvOut.Size = new System.Drawing.Size(497, 212);
 			this.dgvOut.TabIndex = 1;
 			// 
 			// btnPegar
@@ -103,6 +112,32 @@
 			this.btnPegar.UseVisualStyleBackColor = true;
 			this.btnPegar.Click += new System.EventHandler(this.btnPegar_Click);
 			// 
+			// lblOut
+			// 
+			this.lblOut.AutoSize = true;
+			this.lblOut.Location = new System.Drawing.Point(395, 248);
+			this.lblOut.Name = "lblOut";
+			this.lblOut.Size = new System.Drawing.Size(16, 13);
+			this.lblOut.TabIndex = 4;
+			this.lblOut.Text = "...";
+			// 
+			// lblIn
+			// 
+			this.lblIn.AutoSize = true;
+			this.lblIn.Location = new System.Drawing.Point(3, 248);
+			this.lblIn.Name = "lblIn";
+			this.lblIn.Size = new System.Drawing.Size(16, 13);
+			this.lblIn.TabIndex = 5;
+			this.lblIn.Text = "...";
+			// 
+			// barra
+			// 
+			this.barra.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.barra.Location = new System.Drawing.Point(395, 271);
+			this.barra.Name = "barra";
+			this.barra.Size = new System.Drawing.Size(497, 4);
+			this.barra.TabIndex = 6;
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -111,10 +146,11 @@
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.Name = "Form1";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Form1";
+			this.Text = "Validación Documentos";
 			this.Load += new System.EventHandler(this.Form1_Load);
 			((System.ComponentModel.ISupportInitialize)(this.dgvIn)).EndInit();
 			this.tableLayoutPanel1.ResumeLayout(false);
+			this.tableLayoutPanel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvOut)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -128,6 +164,9 @@
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.DataGridView dgvOut;
 		private System.Windows.Forms.Button btnPegar;
+		private System.Windows.Forms.Label lblOut;
+		private System.Windows.Forms.Label lblIn;
+		private System.Windows.Forms.ProgressBar barra;
 	}
 }
 

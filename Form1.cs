@@ -31,16 +31,22 @@ namespace ConsultaAutorizacionSRI
 		private void btnConsultar_Click(object sender, EventArgs e)
 		{
 			dgvOut.DataSource = null;
+			listaResultados = new List<DatosTributarios>();
 			List<ClaveAcceso> lista = new List<ClaveAcceso>();
 			lista= (List<ClaveAcceso>)dgvIn.DataSource;
+			barra.Minimum = 0;
+			barra.Value = 0;
+			barra.Maximum = lista.Count;
 			foreach (ClaveAcceso claveAcceso in lista)
 			{
 				if (claveAcceso.Numero.Length == 49)
 				{
 					listaResultados.Add(LlamarSri(claveAcceso.Numero));
 				}
-			 
+				barra.Value ++;
 			}
+			int Autorizados = listaResultados.Where(x => x.Estado.Equals("AUTORIZADO")).Count();
+			lblOut.Text = Autorizados.ToString() +" Autorizados";
 			dgvOut.DataSource = listaResultados;
 		}
 		#region Metodos
@@ -127,6 +133,7 @@ namespace ConsultaAutorizacionSRI
 				}
 				dgvIn.DataSource = null;
 				dgvIn.DataSource = listaClavesAcceso;
+				lblIn.Text = listaClavesAcceso.Count.ToString()+ " Claves de Accesos";
 			}
 			else MessageBox.Show("Numero de columnas a copiar del Excel y la Grilla deben ser iguales");
 			}
