@@ -30,6 +30,7 @@ namespace ConsultaAutorizacionSRI
 
 		private void btnConsultar_Click(object sender, EventArgs e)
 		{
+			dgvOut.DataSource = null;
 			List<ClaveAcceso> lista = new List<ClaveAcceso>();
 			lista= (List<ClaveAcceso>)dgvIn.DataSource;
 			foreach (ClaveAcceso claveAcceso in lista)

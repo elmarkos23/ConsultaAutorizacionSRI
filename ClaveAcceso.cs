@@ -16,7 +16,6 @@ namespace ConsultaAutorizacionSRI
 		public static List<ClaveAcceso> GetData()
 		{
 			List<ClaveAcceso> lista = new List<ClaveAcceso>();
-			lista.Add(new ClaveAcceso { Numero="Coloca" });
 			return lista;
 		}
 
