@@ -110,15 +110,13 @@ namespace ConsultaAutorizacionSRI
 		private void Copiar()
 		{
 			listaClavesAcceso = new List<ClaveAcceso>();
-			string formato = DataFormats.CommaSeparatedValue;
+			string formato = DataFormats.Text;
 			object contenido = Clipboard.GetData(formato);
-			if (contenido != null && contenido is MemoryStream)
-			{
-				byte[] buffer;
-				using (MemoryStream ms = (MemoryStream)contenido) buffer = ms.ToArray();
-				string lista = Encoding.UTF8.GetString(buffer).Replace("\r\n", ",");
+			string con = (String)contenido;
+			if (contenido != null)
+				{
+				string lista = con.Replace("\r\n", ",");
 				string[] data = lista.Split(',');
-				
 				foreach (string a in data)
 				{
 					if (a.ToString().Length == 49)
@@ -126,13 +124,10 @@ namespace ConsultaAutorizacionSRI
 						listaClavesAcceso.Add(new ClaveAcceso { Numero = a.ToString() });
 					}
 				}
-					
-
 				dgvIn.DataSource = null;
 				dgvIn.DataSource = listaClavesAcceso;
 			}
 			else MessageBox.Show("Numero de columnas a copiar del Excel y la Grilla deben ser iguales");
-			
 			}
 
 		#endregion
