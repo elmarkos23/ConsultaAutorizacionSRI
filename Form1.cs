@@ -30,7 +30,8 @@ namespace ConsultaAutorizacionSRI
 
 		private void btnConsultar_Click(object sender, EventArgs e)
 		{
-			dgvOut.DataSource = null;
+			gvAutorizados.DataSource = null;
+			gvNoAutorizados.DataSource = null;
 			listaResultados = new List<DatosTributarios>();
 			List<ClaveAcceso> lista = new List<ClaveAcceso>();
 			lista= (List<ClaveAcceso>)dgvIn.DataSource;
@@ -44,18 +45,19 @@ namespace ConsultaAutorizacionSRI
 					listaResultados.Add(LlamarSri(claveAcceso.Numero));
 				}
 				barra.Value ++;
+				lblOut.Text = barra.Value.ToString();
 			}
 			int Autorizados = listaResultados.Where(x => x.Estado.Equals("AUTORIZADO")).Count();
 			lblOut.Text = Autorizados.ToString() +" Autorizados";
-			dgvOut.DataSource = listaResultados;
+			gvAutorizados.DataSource = listaResultados.Where(x=>x.Estado.Equals("AUTORIZADO")).ToList();
+			gvNoAutorizados.DataSource = listaResultados.Where(x => !x.Estado.Equals("AUTORIZADO")).ToList();
 		}
 		#region Metodos
 		private DatosTributarios LlamarSri(string claveAcceso)
 		{
-			var resultado = string.Empty;
+      var resultado = string.Empty;
 			DatosTributarios datosTributarios = null;
-			string url = "https://cel.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantes?wsdl";
-
+      string url = "https://cel.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl";
 			string xml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ec=\"http://ec.gob.sri.ws.autorizacion\">";
 			xml = xml + "<soapenv:Header/>";
 			xml = xml + "<soapenv:Body>";
@@ -65,53 +67,69 @@ namespace ConsultaAutorizacionSRI
 			xml = xml + "</soapenv:Body>";
 			xml = xml + "</soapenv:Envelope>";
 
-			byte[] bytes = Encoding.ASCII.GetBytes(xml);
-			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+      try
+      {
+				byte[] bytes = Encoding.ASCII.GetBytes(xml);
+				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 
-			request.Method = "POST";
-			request.ContentLength = bytes.Length;
-			request.ContentType = "text/xml";
+				request.Method = "POST";
+				request.ContentLength = bytes.Length;
+				request.ContentType = "text/xml";
 
-			Stream requestStream = request.GetRequestStream();
-			requestStream.Write(bytes, 0, bytes.Length);
-			requestStream.Close();
+				Stream requestStream = request.GetRequestStream();
+				requestStream.Write(bytes, 0, bytes.Length);
+				requestStream.Close();
 
-			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-			if (response.StatusCode == HttpStatusCode.OK)
-			{
-				Stream responseStream = response.GetResponseStream();
-				StreamReader reader = new StreamReader(responseStream);
-				resultado = reader.ReadToEnd();
-			}
-			resultado = WebUtility.HtmlDecode(resultado);
-			response.Close();
-			if (resultado.Contains("<numeroComprobantes>0</numeroComprobantes>"))
-			{
-				datosTributarios = new DatosTributarios
+				HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+				if (response.StatusCode == HttpStatusCode.OK)
 				{
-					claveAcceso = claveAcceso,
-					numeroAutorizacion = "",
-					FechaAutorizacion = DateTime.Now,
-					Estado = "NO RECIBIDO",
-				};
-			}
-			else
-			{
-				var caracterPrincipal = resultado.IndexOf('?') - 1;
-				var caracterSecundario = resultado.LastIndexOf('?') + 2;
-				resultado = resultado.Remove(caracterPrincipal, (caracterSecundario - caracterPrincipal));
-				resultado = "<?xml version=" + "\"1.0\"" + " encoding=" + "\"UTF-8\"" + "?>" + resultado;
-				System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
-				doc.LoadXml(resultado);
-				System.Xml.XmlNode element = doc.SelectSingleNode("numeroAutorizacion");
-				datosTributarios = new DatosTributarios
+					Stream responseStream = response.GetResponseStream();
+					StreamReader reader = new StreamReader(responseStream);
+					resultado = reader.ReadToEnd();
+				}
+				resultado = WebUtility.HtmlDecode(resultado);
+				response.Close();
+				if (resultado.Contains("<numeroComprobantes>0</numeroComprobantes>"))
 				{
-					claveAcceso = doc.GetElementsByTagName("claveAcceso")[0].InnerText,
-					numeroAutorizacion = doc.GetElementsByTagName("numeroAutorizacion")[0].InnerText,
-					FechaAutorizacion = Convert.ToDateTime(doc.GetElementsByTagName("fechaAutorizacion")[0].InnerText),
-					Estado = doc.GetElementsByTagName("estado")[0].InnerText,
-				};
+					datosTributarios = new DatosTributarios
+					{
+						claveAcceso = claveAcceso,
+						numeroAutorizacion = "",
+						FechaAutorizacion = DateTime.Now,
+						Estado = "NO RECIBIDO",
+					};
+				}
+				else
+				{
+					var caracterPrincipal = resultado.IndexOf('?') - 1;
+					var caracterSecundario = resultado.LastIndexOf('?') + 2;
+					resultado = resultado.Remove(caracterPrincipal, (caracterSecundario - caracterPrincipal));
+					resultado = "<?xml version=" + "\"1.0\"" + " encoding=" + "\"UTF-8\"" + "?>" + resultado;
+					System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+					doc.LoadXml(resultado);
+					System.Xml.XmlNode element = doc.SelectSingleNode("numeroAutorizacion");
+					datosTributarios = new DatosTributarios
+					{
+						claveAcceso = doc.GetElementsByTagName("claveAcceso")[0].InnerText,
+						numeroAutorizacion = doc.GetElementsByTagName("numeroAutorizacion")[0].InnerText,
+						FechaAutorizacion = Convert.ToDateTime(doc.GetElementsByTagName("fechaAutorizacion")[0].InnerText),
+						Estado = doc.GetElementsByTagName("estado")[0].InnerText,
+					};
+				}
 			}
+      catch //(Exception ex)
+      {
+				if (datosTributarios == null)
+				{
+					datosTributarios = new DatosTributarios();
+					datosTributarios.claveAcceso = claveAcceso;
+					datosTributarios.Estado = "Error";
+					datosTributarios.FechaAutorizacion = new DateTime(1990, 1, 1);
+					datosTributarios.numeroAutorizacion = claveAcceso;
+				}
+			}
+
+
 			return datosTributarios;
 		}
 		private void Copiar()
